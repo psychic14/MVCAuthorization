@@ -1,7 +1,22 @@
+using Microsoft.AspNetCore.Authorization;
+using MVCAuthorization.Authorization;
+using MVCAuthorization.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddAuthentication("MyCookieAuth")
+    .AddCookie("MyCookieAuth", options =>
+    {
+        options.LoginPath = "/Account/Login";
+        options.AccessDeniedPath = "/Account/AccessDenied";
+    });
+builder.Services.AddAuthorization(options =>
+{
+    options.AddRolePolicies();
+});
+
 
 var app = builder.Build();
 
